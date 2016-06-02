@@ -28,6 +28,18 @@ public class Node {
         this.name = name;
     }
 
+    public Node(Point coordinates, int diameter) {
+        this.point = coordinates;
+        this.diameter = diameter;
+        this.color = Generator.getRandomColor();
+    }
+
+    public Node(int x, int y, int diameter) {
+        this.point = new Point(x, y);
+        this.diameter = diameter;
+        this.color = Generator.getRandomColor();
+    }
+
     public Vector getNetForce() {
         return netForce;
     }
@@ -41,7 +53,7 @@ public class Node {
     public boolean equals(Object obj) {
         if (obj instanceof Node) {
             Node node = (Node) obj;
-            return point.equals(node.point);
+            return name.equals(node.name);
         } else {
             return false;
         }
@@ -49,19 +61,7 @@ public class Node {
 
     @Override
     public int hashCode() {
-        return point.hashCode();
-    }
-
-    public Node(Point coordinates, int diameter) {
-        this.point = coordinates;
-        this.diameter = diameter;
-        this.color = Generator.getRandomColor();
-    }
-
-    public Node(int x, int y, int diameter) {
-        this.point = new Point(x, y);
-        this.diameter = diameter;
-        this.color = Generator.getRandomColor();
+        return name.hashCode();
     }
 
     public Color getColor() {
@@ -95,8 +95,8 @@ public class Node {
 
     public void move(int msPassed) {
         Vector moveDelta = speed.mult(msPassed);
-        point.x += speed.getX();
-        point.y += speed.getY();
+        point.x += moveDelta.getX();
+        point.y += moveDelta.getY();
     }
 
     public void computeSpeed(int msPassed) {
@@ -104,4 +104,11 @@ public class Node {
         speed.add(speedDelta);
     }
 
+    public Vector getAcceleration() {
+        return acceleration;
+    }
+
+    public Vector getSpeed() {
+        return speed;
+    }
 }

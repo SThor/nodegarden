@@ -5,7 +5,6 @@
  */
 package ihm;
 
-import tools.Generator;
 import java.awt.BasicStroke;
 import static java.awt.BasicStroke.CAP_ROUND;
 import static java.awt.BasicStroke.JOIN_ROUND;
@@ -18,10 +17,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import model.Field;
 import model.Link;
 import model.Node;
+import model.Vector;
 
 /**
  *
@@ -29,7 +28,7 @@ import model.Node;
  */
 public class FieldPanel extends javax.swing.JPanel {
 
-    private int millis = 10;
+    private int tickRate = 10;
     private boolean running;
     private Field field;
     private MainFrame parent;
@@ -83,6 +82,8 @@ public class FieldPanel extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         paintNodes(g2);
+        paintNetForces(g2);
+        paintSpeeds(g2);
         paintLinks(g2);
     }
 
@@ -109,6 +110,42 @@ public class FieldPanel extends javax.swing.JPanel {
             int x = center.x - (node.getDiameter() / 2);
             int y = center.y - (node.getDiameter() / 2);
             g2.fillOval(x, y, node.getDiameter(), node.getDiameter());
+            g2.setColor(Color.white);
+            g2.drawString(node.getName(), x, y);
+        }
+    }
+    
+    private void paintNetForces(Graphics2D g2){
+        List<Node> nodes = field.getNodes();
+        for (Node node : nodes) {
+            g2.setColor(Color.GREEN);
+
+            Point start = node.getPoint();
+            int xStart = start.x;
+            int yStart = start.y;
+            
+            Vector netForce = node.getNetForce().div(1000);
+            int xEnd = (int) (xStart + netForce.getX());
+            int yEnd = (int) (yStart + netForce.getY());
+            
+            g2.drawLine(xStart, yStart, xEnd, yEnd);
+        }
+    }
+    
+    private void paintSpeeds(Graphics2D g2){
+        List<Node> nodes = field.getNodes();
+        for (Node node : nodes) {
+            g2.setColor(Color.RED);
+
+            Point start = node.getPoint();
+            int xStart = start.x;
+            int yStart = start.y;
+            
+            Vector netForce = node.getSpeed().mult(10000);
+            int xEnd = (int) (xStart + netForce.getX());
+            int yEnd = (int) (yStart + netForce.getY());
+            
+            g2.drawLine(xStart, yStart, xEnd, yEnd);
         }
     }
 
@@ -120,9 +157,9 @@ public class FieldPanel extends javax.swing.JPanel {
                 while (running) {
                     try {
                         field.updateForces();
-                        field.move(millis);
+                        field.move(tickRate);
                         parent.updateStats(field.getNodesNumber(), field.getLinksNumber());
-                        Thread.sleep(millis);
+                        Thread.sleep(tickRate);
                         repaint();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(FieldPanel.class.getName()).log(Level.SEVERE, null, ex);

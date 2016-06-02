@@ -20,7 +20,7 @@ public class Field {
         for (Node node1 : nodes) {
             updateLinks(node1);
         }
-        removeTrash();
+        //removeTrash();
     }
 
     public void updateLinks(Node node1) {
@@ -30,7 +30,7 @@ public class Field {
             Link link = new Link(node1, node2);
             links.add(link); // automatiquement, ne va pas ajouter le lien s'il est déjà présent (ou si son opposé l'est)
         }
-        removeTrash();
+        //removeTrash();
     }
     
     public void updateForces(){

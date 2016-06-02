@@ -5,7 +5,6 @@
  */
 package model;
 
-import java.awt.Color;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,45 +39,6 @@ public class LinkTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getNode1 method, of class Link.
-     */
-    /*@Test
-    public void testGetNode1() {
-        System.out.println("getNode1");
-        Link instance = null;
-        Node expResult = null;
-        Node result = instance.getNode1();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
-    /**
-     * Test of getNode2 method, of class Link.
-     */
-    /*@Test
-    public void testGetNode2() {
-        System.out.println("getNode2");
-        Link instance = null;
-        Node expResult = null;
-        Node result = instance.getNode2();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
-    /**
-     * Test of getThickness method, of class Link.
-     */
-    /*@Test
-    public void testGetThickness() {
-        System.out.println("getThickness");
-        Link instance = null;
-        double expResult = 0.0;
-        double result = instance.getThickness();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
     /**
      * Test of equals method, of class Link.
      */
@@ -121,16 +81,60 @@ public class LinkTest {
     }
 
     /**
-     * Test of getColor method, of class Link.
+     * Test of getNode1 method, of class Link.
      */
-    /*@Test
-    public void testGetColor() {
-        System.out.println("getColor");
-        Link instance = null;
-        Color expResult = null;
-        Color result = instance.getColor();
+    @Test
+    public void testGetNode1() {
+        System.out.println("getNode1");
+        Node expResult = new Node(1,1,"1");
+        Node result = instance.getNode1();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+    }
+
+    /**
+     * Test of getNode2 method, of class Link.
+     */
+    @Test
+    public void testGetNode2() {
+        System.out.println("getNode2");
+        Node expResult = new Node(2,2,"2");
+        Node result = instance.getNode2();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getThickness method, of class Link.
+     */
+    @Test
+    public void testGetThickness() {
+        System.out.println("getThickness");
+        Link instance = new Link(new Node(1,1,20), new Node(2,2,100));
+        double expResult = 50;
+        double result = instance.getThickness();
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of getLength method, of class Link.
+     */
+    @Test
+    public void testGetLength() {
+        System.out.println("getLength");
+        double expResult = Math.sqrt(2);
+        double result = instance.getLength();
+        assertEquals(expResult, result, 0.0001);
+    }
+
+    /**
+     * Test of getForceOn method, of class Link.
+     */
+    @Test
+    public void testGetForceOn() {
+        System.out.println("getForceOn");
+        Node node = new Node(2,2,"2");
+        double angle = (-3*Math.PI)/4;
+        Vector expResult = Vector.fromAngle(angle, instance.getStrength());
+        Vector result = instance.getForceOn(node);
+        assertEquals(expResult, result);
+    }
 }
